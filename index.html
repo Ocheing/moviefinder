@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Finder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="logo">🎬 MovieFinder</div>
+    <input type="text" id="movieInput" placeholder="Search for movies..." autocomplete="off" />
+    <button id="searchBtn">🔍</button>
+    <button id="loginBtn">👤 Login</button>
+<select id="languageSelect">
+  <option value="en-US">English (US)</option>
+  <option value="fr-FR">Français</option>
+  <option value="de-DE">Deutsch</option>
+  <option value="ja-JP">日本語</option>
+  <option value="es-ES">Español</option>
+</select>
+    <button id="toggleTheme" class="theme-toggle">🌗</button>
+  </header>
+
+  <!-- Welcome Message -->
+  <div id="welcomeUser" class="welcome-msg"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Search Results -->
+    <section class="featured" id="movieList">
+      <!-- Movie results show here -->
+    </section>
+
+    <!-- Right Sidebar (for spacing / design) -->
+    <aside class="up-next">
+      <h2 id="suggestionsSidebar">Search for a movie to begin...</h2>
+    </aside>
+  </div>
+
+  <!-- Favorites Section (Hidden until logged in) -->
+  <div id="favoritesSection" style="display: none;">
+   <h2 id="favoritesTitle">Your Favorites</h2>
+    <div id="favoritesList" class="movie-grid"></div>
+  </div>
+
+ <!-- Wachlist section -->
+  <section id="watchlistContainer">
+  <h2 id="watchlistTitle">Your Watchlist</h2>
+  <div id="watchlistSection" class="movie-grid"></div>
+</section>
+
+  <!-- Modal for Movie Details -->
+  <div id="movieModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeAuthModal" class="close">&times;</span>
+     <h2 id="authTitle">Create Account</h2>
+
+      <div id="signupFields">
+        <input type="text" id="signupName" placeholder="Full Name" />
+        <input type="email" id="signupEmail" placeholder="Email" />
+        <input type="password" id="signupPassword" placeholder="Password" />
+        <button id="signupSubmit">Sign Up</button>
+        <p id="alreadyHaveText">Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
+      </div>
+
+      <div id="loginFields" style="display: none;">
+        <input type="email" id="loginEmail" placeholder="Email" />
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <button id="loginSubmit">Sign In</button>
+        <p id="dontHaveText">Don't have an account? <a href="#" id="switchToSignup">Create one</a></p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- TOP SEARCHED MOVIES -->
+<section id="topMoviesSection" class="section-block">
+ <h2 id="topTitle">🔥 Top Searched Movies</h2>
+  <div id="topMovies" class="movie-grid"></div>
+</section>
+
+<!-- SUGGESTED MOVIES (Only after login) -->
+<section id="suggestedMoviesSection" class="section-block" style="display: none;">
+ <h2 id="suggestedTitle">🎯 Suggested for You</h2>
+  <div id="suggestedMovies" class="movie-grid"></div>
+</section>
+
+  <!-- Genre-Based Movie Sections -->
+<div id="genreSections" class="genre-layout">
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>

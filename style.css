@@ -1,0 +1,276 @@
+/* 🌗 THEME VARIABLES */
+:root {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --card-bg: #1f1f1f;
+  --btn-bg: #333;
+  --btn-text: #fff;
+}
+
+.light-mode {
+  --bg-color: #f1f1f1;
+  --text-color: #000000;
+  --card-bg: #ffffff;
+  --btn-bg: #ddd;
+  --btn-text: #000;
+}
+
+/* 🔝 BASIC RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  transition: 0.3s ease;
+}
+
+/* 🔳 NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #000;
+  padding: 10px 20px;
+  color: #fff;
+  gap: 10px;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.navbar input[type="text"] {
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  max-width: 400px;
+}
+
+.navbar button {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.theme-toggle {
+  font-size: 18px;
+}
+
+#languageSelect {
+  margin-left: 10px;
+  padding: 4px;
+  font-size: 14px;
+}
+
+
+
+/* 🙋 USER WELCOME */
+.welcome-msg {
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+/* 📺 MAIN LAYOUT */
+.main-content {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.featured {
+  flex: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.up-next {
+  flex: 1;
+  min-width: 250px;
+  background-color: var(--card-bg);
+  padding: 10px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+/* 🎞 MOVIE CARD */
+.movie-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 10px;
+  width: 180px;
+  transition: 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 6px;
+  height: 270px;
+  object-fit: cover;
+}
+
+.movie-card h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+}
+
+.movie-card p {
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+.movie-card button {
+  margin-top: 8px;
+  width: 100%;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 🪟 MODALS */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  color: var(--text-color);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  color: #000;
+}
+
+.modal-content button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/*ratings*/
+.user-rating {
+  margin-top: 1rem;
+}
+
+.stars {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: gold;
+}
+
+.stars .star {
+  padding: 0 3px;
+}
+
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  .movie-card {
+    width: 100%;
+  }
+  .up-next {
+    width: 100%;
+  }
+}
+
+.modal-content input {
+  margin-bottom: 10px;
+}
+.modal-content a {
+  color: #4caf50;
+  cursor: pointer;
+}
+
+.section-block {
+  margin: 2rem 1rem;
+}
+
+.movie-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.genre-section {
+  margin-bottom: 2rem;
+}
+
+.genre-section h2 {
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
+
+.movie-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.movie-card {
+  flex: 0 0 auto;
+  width: 180px;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 6px;
+  color: white;
+  text-align: center;
+}
