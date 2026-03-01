@@ -33,6 +33,7 @@ async function loadEnvConfig() {
           const key = match[1];
           let value = match[2] || '';
           if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
+          value = value.trim(); // Prevent \r issues on Windows
           if (key === 'TMDB_API_KEY') CONFIG.apiKey = value;
           if (key === 'SUPABASE_URL') SUPABASE_URL = value;
           if (key === 'SUPABASE_ANON_KEY') SUPABASE_ANON_KEY = value;
