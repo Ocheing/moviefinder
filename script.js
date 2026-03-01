@@ -4,7 +4,7 @@
 
 // ── Configuration ──
 const CONFIG = {
-  apiKey: "cfe8cced2385dacd2680a9f065bbef60",
+  apiKey: "", // Automatically loaded from .env
   imageBase: "https://image.tmdb.org/t/p/w500",
   imageOriginal: "https://image.tmdb.org/t/p/original",
   posterPlaceholder: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='450' fill='%23222'%3E%3Crect width='300' height='450' rx='12'/%3E%3Ctext x='150' y='225' text-anchor='middle' fill='%23555' font-size='16' font-family='sans-serif'%3ENo Poster%3C/text%3E%3C/svg%3E",
@@ -16,20 +16,43 @@ const CONFIG = {
   searchHistoryMax: 50,
 };
 
-// ── Supabase Setup ──
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+// ── Environment & Supabase Setup ──
+let SUPABASE_URL = '';
+let SUPABASE_ANON_KEY = '';
 let supabaseClient = null;
 let currentUser = null;
 
-// Only initialize if real credentials are provided
-if (window.supabase && SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+async function loadEnvConfig() {
   try {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const res = await fetch('.env');
+    if (res.ok) {
+      const text = await res.text();
+      text.split('\n').forEach(line => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match) {
+          const key = match[1];
+          let value = match[2] || '';
+          if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
+          if (key === 'TMDB_API_KEY') CONFIG.apiKey = value;
+          if (key === 'SUPABASE_URL') SUPABASE_URL = value;
+          if (key === 'SUPABASE_ANON_KEY') SUPABASE_ANON_KEY = value;
+        }
+      });
+    }
   } catch (e) {
-    console.warn("Supabase credentials invalid. Running in local mode.");
+    console.warn("Could not load .env file. Running with missing keys.");
+  }
+
+  // Initialize Supabase after env is loaded
+  if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL') {
+    try {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.warn("Supabase credentials invalid. Running in local mode.");
+    }
   }
 }
+
 
 // ── State Management ──
 const state = {
@@ -1340,6 +1363,12 @@ function loadAllSections() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  await loadEnvConfig();
+
+  if (!CONFIG.apiKey) {
+    console.error("Critical: TMDB_API_KEY is not set in .env! Movies will fail to load.");
+  }
+
   applyTranslations();
   await loadGenreLookup();
   loadAllSections();
