@@ -1,104 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Movie Finder</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MovieFinder — Discover, Search & Track Movies</title>
+  <link rel="icon" href="data:,">
+  <meta name="description"
+    content="Discover trending movies, get personalized recommendations, and build your watchlist. Powered by TMDb.">
+
+  <!-- DNS Prefetch & Preconnect for faster resource loading -->
+  <link rel="dns-prefetch" href="https://api.themoviedb.org">
+  <link rel="preconnect" href="https://api.themoviedb.org" crossorigin>
+  <link rel="dns-prefetch" href="https://image.tmdb.org">
+  <link rel="preconnect" href="https://image.tmdb.org" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" fetchpriority="high">
 </head>
+
 <body>
 
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
   <!-- Top Navbar -->
-  <header class="navbar">
-    <div class="logo">🎬 MovieFinder</div>
-    <input type="text" id="movieInput" placeholder="Search for movies..." autocomplete="off" />
-    <button id="searchBtn">🔍</button>
-    <button id="loginBtn">👤 Login</button>
-<select id="languageSelect">
-  <option value="en-US">English (US)</option>
-  <option value="fr-FR">Français</option>
-  <option value="de-DE">Deutsch</option>
-  <option value="ja-JP">日本語</option>
-  <option value="es-ES">Español</option>
-</select>
-    <button id="toggleTheme" class="theme-toggle">🌗</button>
+  <header class="navbar" id="navbar">
+    <a href="#" class="logo" id="logoLink">
+      <span class="logo-icon">🎬</span>
+      <span class="logo-text">MovieFinder</span>
+    </a>
+
+    <div class="search-wrapper" id="searchWrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="movieInput" placeholder="Search movies, actors, genres..." autocomplete="off" />
+      <button id="clearSearch" class="clear-search hidden" aria-label="Clear search">&times;</button>
+    </div>
+
+    <nav class="nav-actions">
+      <select id="languageSelect" aria-label="Select language">
+        <optgroup label="── Americas ──">
+          <option value="en-US">🇺🇸 English</option>
+          <option value="es-MX">🇲🇽 Español (MX)</option>
+          <option value="es-ES">🇪🇸 Español (ES)</option>
+          <option value="pt-BR">🇧🇷 Português (BR)</option>
+          <option value="pt-PT">🇵🇹 Português (PT)</option>
+          <option value="fr-CA">🇨🇦 Français (CA)</option>
+        </optgroup>
+        <optgroup label="── Europe ──">
+          <option value="fr-FR">🇫🇷 Français</option>
+          <option value="de-DE">🇩🇪 Deutsch</option>
+          <option value="it-IT">🇮🇹 Italiano</option>
+          <option value="nl-NL">🇳🇱 Nederlands</option>
+          <option value="pl-PL">🇵🇱 Polski</option>
+          <option value="ro-RO">🇷🇴 Română</option>
+          <option value="cs-CZ">🇨🇿 Čeština</option>
+          <option value="sk-SK">🇸🇰 Slovenčina</option>
+          <option value="hu-HU">🇭🇺 Magyar</option>
+          <option value="el-GR">🇬🇷 Ελληνικά</option>
+          <option value="bg-BG">🇧🇬 Български</option>
+          <option value="hr-HR">🇭🇷 Hrvatski</option>
+          <option value="sr-RS">🇷🇸 Српски</option>
+          <option value="uk-UA">🇺🇦 Українська</option>
+          <option value="ru-RU">🇷🇺 Русский</option>
+          <option value="sv-SE">🇸🇪 Svenska</option>
+          <option value="no-NO">🇳🇴 Norsk</option>
+          <option value="da-DK">🇩🇰 Dansk</option>
+          <option value="fi-FI">🇫🇮 Suomi</option>
+        </optgroup>
+        <optgroup label="── Asia ──">
+          <option value="ja-JP">🇯🇵 日本語</option>
+          <option value="ko-KR">🇰🇷 한국어</option>
+          <option value="zh-CN">🇨🇳 中文 (简体)</option>
+          <option value="zh-TW">🇹🇼 中文 (繁體)</option>
+          <option value="hi-IN">🇮🇳 हिन्दी</option>
+          <option value="bn-BD">🇧🇩 বাংলা</option>
+          <option value="ta-IN">🇮🇳 தமிழ்</option>
+          <option value="te-IN">🇮🇳 తెలుగు</option>
+          <option value="th-TH">🇹🇭 ไทย</option>
+          <option value="vi-VN">🇻🇳 Tiếng Việt</option>
+          <option value="id-ID">🇮🇩 Bahasa Indonesia</option>
+          <option value="ms-MY">🇲🇾 Bahasa Melayu</option>
+          <option value="tl-PH">🇵🇭 Filipino</option>
+        </optgroup>
+        <optgroup label="── Middle East & Africa ──">
+          <option value="ar-SA">🇸🇦 العربية</option>
+          <option value="tr-TR">🇹🇷 Türkçe</option>
+          <option value="he-IL">🇮🇱 עברית</option>
+          <option value="fa-IR">🇮🇷 فارسی</option>
+          <option value="sw-KE">🇰🇪 Kiswahili</option>
+          <option value="zu-ZA">🇿🇦 isiZulu</option>
+        </optgroup>
+      </select>
+      <button id="toggleTheme" class="theme-toggle" aria-label="Toggle theme">🌗</button>
+      <button id="loginBtn" class="login-btn">
+        <span class="login-icon">👤</span>
+        <span class="login-text">Sign In</span>
+      </button>
+    </nav>
   </header>
 
-  <!-- Welcome Message -->
-  <div id="welcomeUser" class="welcome-msg"></div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Search Results -->
-    <section class="featured" id="movieList">
-      <!-- Movie results show here -->
-    </section>
-
-    <!-- Right Sidebar (for spacing / design) -->
-    <aside class="up-next">
-      <h2 id="suggestionsSidebar">Search for a movie to begin...</h2>
-    </aside>
+  <!-- Welcome Banner (Logged-in users) -->
+  <div id="welcomeBanner" class="welcome-banner hidden">
+    <div class="welcome-content">
+      <div class="welcome-left">
+        <h2 id="welcomeUser"></h2>
+        <p id="welcomeSubtext">Here's what we've picked for you today ✨</p>
+      </div>
+    </div>
   </div>
 
-  <!-- Favorites Section (Hidden until logged in) -->
-  <div id="favoritesSection" style="display: none;">
-   <h2 id="favoritesTitle">Your Favorites</h2>
-    <div id="favoritesList" class="movie-grid"></div>
-  </div>
+  <!-- Hero Section (Guest users) -->
+  <section id="heroSection" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Your Next<br><span class="gradient-text">Favorite Movie</span></h1>
+      <p class="hero-subtitle">Explore trending films, get smart recommendations, and build your personal watchlist.</p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" id="statMovies">800K+</span>
+          <span class="stat-label">Movies</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">4.8★</span>
+          <span class="stat-label">Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Languages</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-backdrop" id="heroBackdrop"></div>
+  </section>
 
- <!-- Wachlist section -->
-  <section id="watchlistContainer">
-  <h2 id="watchlistTitle">Your Watchlist</h2>
-  <div id="watchlistSection" class="movie-grid"></div>
-</section>
+  <!-- Search Results (shown when searching) -->
+  <section id="searchResultsSection" class="content-section hidden">
+    <div class="section-header">
+      <h2 id="searchResultsTitle">🔍 Search Results</h2>
+      <button id="clearResults" class="btn-clear">✕ Clear</button>
+    </div>
+    <div id="searchResults" class="movie-grid"></div>
+  </section>
+
+  <!-- ═══════════ PERSONALIZED SECTIONS (Logged-in users only) ═══════════ -->
+
+  <!-- Recommended For You -->
+  <section id="recommendedSection" class="content-section hidden">
+    <div class="section-header">
+      <h2 id="recommendedTitle">🎯 Recommended For You</h2>
+    </div>
+    <div id="recommendedMovies" class="movie-scroll-row"></div>
+  </section>
+
+  <!-- User Watchlist -->
+  <section id="watchlistContainer" class="content-section hidden">
+    <div class="section-header">
+      <h2 id="watchlistTitle">📋 Your Watchlist</h2>
+    </div>
+    <div id="watchlistSection" class="movie-scroll-row"></div>
+  </section>
+
+  <!-- User Favorites -->
+  <section id="favoritesSection" class="content-section hidden">
+    <div class="section-header">
+      <h2 id="favoritesTitle">⭐ Your Favorites</h2>
+    </div>
+    <div id="favoritesList" class="movie-scroll-row"></div>
+  </section>
+
+  <!-- ═══════════ PUBLIC SECTIONS (All users) ═══════════ -->
+
+  <!-- Trending Movies -->
+  <section id="trendingMoviesSection" class="content-section">
+    <div class="section-header">
+      <h2 id="trendingTitle">📈 Trending Today</h2>
+    </div>
+    <div id="trendingMovies" class="movie-scroll-row">
+      <!-- Skeleton loaders -->
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- Now Playing -->
+  <section id="nowPlayingSection" class="content-section">
+    <div class="section-header">
+      <h2 id="nowPlayingTitle">🎥 Now Playing</h2>
+    </div>
+    <div id="nowPlayingMovies" class="movie-scroll-row">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- Popular Movies -->
+  <section id="topMoviesSection" class="content-section">
+    <div class="section-header">
+      <h2 id="topTitle">🔥 Most Popular</h2>
+    </div>
+    <div id="topMovies" class="movie-scroll-row">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- Top Rated -->
+  <section id="topRatedSection" class="content-section">
+    <div class="section-header">
+      <h2 id="topRatedTitle">🏆 Top Rated of All Time</h2>
+    </div>
+    <div id="topRatedMovies" class="movie-scroll-row">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- Upcoming -->
+  <section id="upcomingSection" class="content-section">
+    <div class="section-header">
+      <h2 id="upcomingTitle">📅 Coming Soon</h2>
+    </div>
+    <div id="upcomingMovies" class="movie-scroll-row">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </section>
+
+  <!-- Genre Discovery Sections -->
+  <div id="genreSections" class="genre-layout"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo-icon">🎬</span>
+        <span>MovieFinder</span>
+      </div>
+      <p>Powered by <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDb API</a> · Built with ❤️
+      </p>
+    </div>
+  </footer>
 
   <!-- Modal for Movie Details -->
   <div id="movieModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
+    <div class="modal-content" id="modalContent">
+      <button id="closeModal" class="close" aria-label="Close modal">&times;</button>
       <div id="modalBody"></div>
     </div>
   </div>
 
   <!-- Auth Modal -->
   <div id="authModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="closeAuthModal" class="close">&times;</span>
-     <h2 id="authTitle">Create Account</h2>
-
-      <div id="signupFields">
-        <input type="text" id="signupName" placeholder="Full Name" />
-        <input type="email" id="signupEmail" placeholder="Email" />
-        <input type="password" id="signupPassword" placeholder="Password" />
-        <button id="signupSubmit">Sign Up</button>
-        <p id="alreadyHaveText">Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
+    <div class="modal-content auth-modal-content">
+      <button id="closeAuthModal" class="close" aria-label="Close auth modal">&times;</button>
+      <div class="auth-header">
+        <span class="auth-logo">🎬</span>
+        <h2 id="authTitle">Create Account</h2>
+        <p class="auth-subtitle" id="authSubtitle">Join MovieFinder and start tracking your movies</p>
       </div>
 
-      <div id="loginFields" style="display: none;">
-        <input type="email" id="loginEmail" placeholder="Email" />
-        <input type="password" id="loginPassword" placeholder="Password" />
-        <button id="loginSubmit">Sign In</button>
-        <p id="dontHaveText">Don't have an account? <a href="#" id="switchToSignup">Create one</a></p>
+      <div id="signupFields">
+        <div class="input-group">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="John Doe" />
+        </div>
+        <div class="input-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" />
+        </div>
+        <div class="input-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="Min 6 characters" />
+        </div>
+        <button id="signupSubmit" class="btn-primary">
+          <span class="btn-content">Sign Up</span>
+          <span class="btn-loader hidden"></span>
+        </button>
+        <p class="auth-switch" id="alreadyHaveText">Already have an account? <a href="#" id="switchToLogin">Sign in</a>
+        </p>
+      </div>
+
+      <div id="loginFields" class="hidden">
+        <div class="input-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" />
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" />
+        </div>
+        <button id="loginSubmit" class="btn-primary">
+          <span class="btn-content">Sign In</span>
+          <span class="btn-loader hidden"></span>
+        </button>
+        <p class="auth-switch" id="dontHaveText">Don't have an account? <a href="#" id="switchToSignup">Create one</a>
+        </p>
       </div>
     </div>
   </div>
 
-
-  <!-- TOP SEARCHED MOVIES -->
-<section id="topMoviesSection" class="section-block">
- <h2 id="topTitle">🔥 Top Searched Movies</h2>
-  <div id="topMovies" class="movie-grid"></div>
-</section>
-
-<!-- SUGGESTED MOVIES (Only after login) -->
-<section id="suggestedMoviesSection" class="section-block" style="display: none;">
- <h2 id="suggestedTitle">🎯 Suggested for You</h2>
-  <div id="suggestedMovies" class="movie-grid"></div>
-</section>
-
-  <!-- Genre-Based Movie Sections -->
-<div id="genreSections" class="genre-layout">
-</div>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

@@ -4,17 +4,17 @@
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 🔎 Search movies by title
-- 🖼️ View movie posters and overviews
-- ⭐ See ratings and release dates
-- 🌐 Fetches real-time data from TMDb API
-- 📱 Fully responsive design
+-  Search movies by title
+-  View movie posters and overviews
+-  See ratings and release dates
+-  Fetches real-time data from TMDb API
+-  Fully responsive design
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 - HTML5
 - CSS3
@@ -23,13 +23,13 @@
 
 ---
 
-## 📷 Screenshots
+##  Screenshots
 
 
 
 ---
 
-## 🔧 Setup Instructions
+##  Setup Instructions
 
 1. **Clone the repository**:
   
@@ -41,7 +41,7 @@ cd movie-finder
 Open index.html in your browser
 
 ---
-##  🔑 Get Your TMDb API Key
+##   Get Your TMDb API Key
 1. Go to TMDb API Signup
 
 2. Create an account and get your API key
@@ -51,7 +51,7 @@ Open index.html in your browser
 const API_KEY = "YOUR_API_KEY_HERE";
 
 ---
-## 📁 Project Structure
+##  Project Structure
 
 movie-finder/
 │
@@ -66,16 +66,16 @@ movie-finder/
 https://moviefinder-4438a9.netlify.app/
 
 ---
-## ✍️ Author
-Your Name
-GitHub: @yourusername
+##  Author
+MILLICENT ANYANGO OCHEING
+GitHub: @ocheing
 
 ---
-## 📄 License
+## License
 This project is licensed under the MIT License.
 
 ---
-## 🙏 Acknowledgments
+##  Acknowledgments
 TMDb for providing an awesome free API
 
 ---
